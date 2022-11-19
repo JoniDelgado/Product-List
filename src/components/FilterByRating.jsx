@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-const FilterByRating = ({ list, onChange, ratingToFilter }) => {
+const FilterByRating = ({ list, onChange, filters }) => {
   const setStars = new Set();
   for (let el of list) setStars.add(el.rating);
   const stars = Array.from(setStars).sort();
@@ -9,7 +9,7 @@ const FilterByRating = ({ list, onChange, ratingToFilter }) => {
   return (
     <StyleStarFilterContainer>
       <h5>Rating</h5>
-      {ratingToFilter && (
+      {filters.rating && (
         <div onClick={(e) => onChange(e, null, "rating")}>
           <p>Remove Filter</p>
         </div>

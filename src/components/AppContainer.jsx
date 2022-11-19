@@ -5,12 +5,13 @@ import ProductsList from "./ProductsList";
 
 const AppContainer = () => {
   const [filters, setFilters] = useState({
-    color: null,
+    color: [],
     rating: null,
-    price: null,
+    price: {
+      from: 0,
+      to: 0,
+    },
   });
-  const [colorsToFilter, setColorsToFilter] = useState([]);
-  const [ratingToFilter, setRatingToFilter] = useState(null);
   const [list, setList] = useState([]);
   const [productList, setProductList] = useState([]);
 
@@ -29,46 +30,35 @@ const AppContainer = () => {
   }, []);
 
   useEffect(() => {
-    const filteredList = list.filter((product) => {
-      if (colorsToFilter.length) {
-        return colorsToFilter.find((color) => color === product.color);
-      } else return product;
-    });
+    const { color, rating, price } = filters;
+  }, [filters]);
 
-    const filter2 = filteredList.filter((el) => {
-      if (ratingToFilter) {
-        return el.rating === ratingToFilter;
-      } else return el;
-    });
-
-    setProductList(filter2);
-  }, [colorsToFilter, ratingToFilter]);
-
-  const handleFilterChange = (e, rating, filter) => {
+  const handleFilterChange = (e, filterData, filterType) => {
     const { value } = e.target;
 
-    if (filter === "color") {
-      const colorInList = colorsToFilter.find((color) => color === value);
-      if (!colorInList) {
-        setColorsToFilter((color) => [...color, value]);
+    if (filterType === "color") {
+      const colorsToFilter = filters.color.find((color) => color === value);
+      if (!colorsToFilter) {
+        setFilters({ ...filters, color: [...filters.color, value] });
       } else {
-        const filter = colorsToFilter.filter((color) => color !== value);
-        setColorsToFilter(filter);
+        const removeColor = filters.color.filter((color) => color !== value);
+        setFilters({ ...filters, color: removeColor });
       }
     }
 
-    if (filter === "rating") {
-      setRatingToFilter(rating);
+    if (filterType === "rating") {
+      if (!filterData) setFilters({ ...filters, rating: filterData });
+      else setFilters({ ...filters, rating: filterData });
+    }
+
+    if (filterType === "price") {
+      setFilters({ ...filters, price: filterData });
     }
   };
 
   return (
     <>
-      <FilterList
-        onChange={handleFilterChange}
-        list={list}
-        ratingToFilter={ratingToFilter}
-      />
+      <FilterList onChange={handleFilterChange} list={list} filters={filters} />
       <ProductsList productList={productList} />
     </>
   );

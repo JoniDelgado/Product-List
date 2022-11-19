@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 
 const FilterByColor = ({ list, onChange }) => {
+  const [filter, setFilter] = useState([]);
   const colorsList = new Set();
   for (let colorFromList of list) {
     colorsList.add(colorFromList.color);

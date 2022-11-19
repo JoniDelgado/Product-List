@@ -9,7 +9,10 @@ const ProductsList = ({ productList }) => {
           <ProductArticle key={product.id}>
             <img src={product.image} alt={product.name} />
             <h2>{product.name}</h2>
-            <p>{"★".repeat(product.rating).padEnd(5, "☆")}</p>
+            <p>
+              {"★".repeat(product.rating).padEnd(5, "☆")} y color{" "}
+              {product.color}
+            </p>
             <p>
               {product.price.toLocaleString("es-Es", {
                 style: "currency",
