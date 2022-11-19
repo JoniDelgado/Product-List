@@ -5,9 +5,12 @@ import ProductsList from "./ProductsList";
 
 const AppContainer = () => {
   const [filters, setFilters] = useState({
-    color: null,
+    color: [],
     rating: null,
-    price: null,
+    price: {
+      from: 0,
+      to: 0,
+    },
   });
 
   const [list, setList] = useState([]);
