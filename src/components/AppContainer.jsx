@@ -30,9 +30,11 @@ const AppContainer = () => {
     getFromEndPoints();
   }, []);
 
-  const handleFilterChange = () => {};
+  const handleFilterChange = (filterType, filter) => {
+    setFilters({ ...filters, [filterType]: filter });
+  };
 
-  console.log(handleFilterChange);
+  console.log(filters);
 
   return (
     <>

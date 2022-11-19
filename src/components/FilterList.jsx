@@ -4,11 +4,11 @@ import FilterByColor from "./FilterByColor";
 import FilterByPrice from "./FilterByPrice";
 import FilterByRating from "./FilterByRating";
 
-const FilterList = ({ onChange, list, filters }) => {
+const FilterList = ({ onChange, list }) => {
   return (
     <StyleAsideContain>
-      <FilterByPrice list={list} onChange={onChange} filters={filters} />
-      <FilterByRating onChange={onChange} list={list} filters={filters} />
+      {/*   <FilterByPrice list={list} onChange={onChange} /> */}
+      <FilterByRating onChange={onChange} list={list} />
       <FilterByColor onChange={onChange} list={list} />
     </StyleAsideContain>
   );

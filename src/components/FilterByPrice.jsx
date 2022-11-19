@@ -1,11 +1,18 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
-const FilterByPrice = ({ filters, onChange }) => {
-  const [priceForm, setPriceForm] = useState({
-    from: 0,
-    to: 0,
-  });
+const initialValue = {
+  from: 0,
+  to: 0,
+};
+
+const FilterByPrice = ({ onChange }) => {
+  const [priceForm, setPriceForm] = useState(initialValue);
+  const [filter, setFilter] = useState(null);
+
+  useEffect(() => {
+    onChange("price", priceForm);
+  }, [priceForm]);
 
   const handlePriceChange = (e) => {
     const { name, value } = e.target;
@@ -29,7 +36,7 @@ const FilterByPrice = ({ filters, onChange }) => {
         value={priceForm.to}
         onChange={(e) => handlePriceChange(e)}
       />
-      <button onClick={(e) => onChange(e, priceForm, "price")}>Filtrar</button>
+      <button onClick={(e) => setFilter(priceForm)}>Filtrar</button>
     </StyleFilterByPrice>
   );
 };

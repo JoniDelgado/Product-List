@@ -1,22 +1,32 @@
-import React from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
 
-const FilterByRating = ({ list, onChange, filters }) => {
-  const setStars = new Set();
-  for (let el of list) setStars.add(el.rating);
-  const stars = Array.from(setStars).sort();
+const FilterByRating = ({ list, onChange }) => {
+  const [filter, setFilter] = useState(null);
+
+  useEffect(() => {
+    onChange("rating", filter);
+  }, [filter]);
+
+  const rating = useMemo(() => {
+    const setRating = new Set();
+    for (let el of list) {
+      setRating.add(el.rating);
+    }
+    return Array.from(setRating).sort();
+  }, [list]);
 
   return (
     <StyleStarFilterContainer>
       <h5>Rating</h5>
-      {filters.rating && (
-        <div onClick={(e) => onChange(e, null, "rating")}>
+      {filter && (
+        <div onClick={() => setFilter(null)}>
           <p>Remove Filter</p>
         </div>
       )}
-      {stars.map((star) => {
+      {rating.map((star) => {
         return (
-          <div key={star} onClick={(e) => onChange(e, star, "rating")}>
+          <div key={star} onClick={() => setFilter(star)}>
             <p>{"★".repeat(star).padEnd(5, "☆")}</p>
           </div>
         );

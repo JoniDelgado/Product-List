@@ -4,7 +4,9 @@ import styled from "styled-components";
 const FilterByColor = ({ list, onChange }) => {
   const [filter, setFilter] = useState([]);
 
-  useEffect(() => {}, [filter]);
+  useEffect(() => {
+    onChange("color", filter);
+  }, [filter]);
 
   const colors = useMemo(() => {
     const colors = new Set();
