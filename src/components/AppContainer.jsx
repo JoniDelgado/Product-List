@@ -1,16 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { endpoints } from "../assets/endpoints";
 import FilterList from "./FilterList";
 import ProductsList from "./ProductsList";
 
 const AppContainer = () => {
   const [filters, setFilters] = useState({
+    rating: [],
     color: [],
-    rating: null,
-    price: {
-      from: 0,
-      to: 0,
-    },
   });
 
   const [list, setList] = useState([]);
@@ -30,16 +26,30 @@ const AppContainer = () => {
     getFromEndPoints();
   }, []);
 
-  const handleFilterChange = (filterType, filter) => {
-    setFilters({ ...filters, [filterType]: filter });
-  };
+  const matches = useMemo(() => {
+    const filterToApply = Object.values(filters).filter(
+      (el) => typeof el === "function"
+    );
 
-  console.log(filters);
+    let matches = productList;
+
+    for (let filters of filterToApply) {
+      matches = matches.filter((el) => filters(el));
+    }
+
+    return matches;
+  }, [filters]);
 
   return (
     <>
-      <FilterList onChange={handleFilterChange} list={list} filters={filters} />
-      <ProductsList productList={productList} />
+      <FilterList
+        onChange={(filterType, filter) =>
+          setFilters({ ...filters, [filterType]: filter })
+        }
+        list={list}
+        filters={filters}
+      />
+      <ProductsList matches={matches} />
     </>
   );
 };

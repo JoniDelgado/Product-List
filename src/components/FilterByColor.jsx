@@ -1,11 +1,16 @@
 import React, { useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
 
+const initialState = [];
+
 const FilterByColor = ({ list, onChange }) => {
-  const [filter, setFilter] = useState([]);
+  const [filter, setFilter] = useState(initialState);
 
   useEffect(() => {
-    onChange("color", filter);
+    onChange(
+      "color",
+      filter.length ? (prod) => filter.includes(prod.color) : null
+    );
   }, [filter]);
 
   const colors = useMemo(() => {

@@ -1,11 +1,16 @@
 import React, { useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
 
+const initialState = [];
+
 const FilterByRating = ({ list, onChange }) => {
-  const [filter, setFilter] = useState(null);
+  const [filter, setFilter] = useState(initialState);
 
   useEffect(() => {
-    onChange("rating", filter);
+    onChange(
+      "rating",
+      filter.length ? (prod) => filter.includes(prod.rating) : null
+    );
   }, [filter]);
 
   const rating = useMemo(() => {
@@ -20,13 +25,13 @@ const FilterByRating = ({ list, onChange }) => {
     <StyleStarFilterContainer>
       <h5>Rating</h5>
       {filter && (
-        <div onClick={() => setFilter(null)}>
+        <div onClick={() => setFilter(initialState)}>
           <p>Remove Filter</p>
         </div>
       )}
       {rating.map((star) => {
         return (
-          <div key={star} onClick={() => setFilter(star)}>
+          <div key={star} onClick={() => setFilter([star])}>
             <p>{"★".repeat(star).padEnd(5, "☆")}</p>
           </div>
         );
