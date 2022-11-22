@@ -1,16 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { endpoints } from "../assets/endpoints";
 import FilterList from "./FilterList";
 import ProductsList from "./ProductsList";
 
 const AppContainer = () => {
   const [filters, setFilters] = useState({
-    color: null,
-    rating: null,
-    price: null,
+    color: [],
+    rating: [],
   });
-  const [colorsToFilter, setColorsToFilter] = useState([]);
-  const [ratingToFilter, setRatingToFilter] = useState(null);
   const [list, setList] = useState([]);
   const [productList, setProductList] = useState([]);
 
@@ -28,46 +25,37 @@ const AppContainer = () => {
     getFromEndPoints();
   }, []);
 
-  useEffect(() => {
-    const filteredList = list.filter((product) => {
-      if (colorsToFilter.length) {
-        return colorsToFilter.find((color) => color === product.color);
-      } else return product;
+  const filterToApply = (filter, prod) =>
+    filter.length ? filters[filter].includes(prod[filter]) : null;
+
+  const funcion = (filter, prod) => {
+    const a = prod.filter((el) => {
+      return filterToApply(filter, el);
     });
 
-    const filter2 = filteredList.filter((el) => {
-      if (ratingToFilter) {
-        return el.rating === ratingToFilter;
-      } else return el;
-    });
-
-    setProductList(filter2);
-  }, [colorsToFilter, ratingToFilter]);
-
-  const handleFilterChange = (e, rating, filter) => {
-    const { value } = e.target;
-
-    if (filter === "color") {
-      const colorInList = colorsToFilter.find((color) => color === value);
-      if (!colorInList) {
-        setColorsToFilter((color) => [...color, value]);
-      } else {
-        const filter = colorsToFilter.filter((color) => color !== value);
-        setColorsToFilter(filter);
-      }
-    }
-
-    if (filter === "rating") {
-      setRatingToFilter(rating);
-    }
+    console.log(a);
   };
+  const algo = useMemo(() => {
+    const a = Object.keys(filters);
+
+    let matches = productList;
+
+    for (let key of a) {
+      matches = funcion(key, productList);
+    }
+
+    return matches;
+  }, [filters]);
+
+  // console.log(algo);
 
   return (
     <>
       <FilterList
-        onChange={handleFilterChange}
+        onChange={(filterType, filter) =>
+          setFilters({ ...filters, [filterType]: filter })
+        }
         list={list}
-        ratingToFilter={ratingToFilter}
       />
       <ProductsList productList={productList} />
     </>

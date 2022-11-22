@@ -1,12 +1,29 @@
-import React from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
 
+const initialValue = [];
 const FilterByColor = ({ list, onChange }) => {
-  const colorsList = new Set();
-  for (let colorFromList of list) {
-    colorsList.add(colorFromList.color);
-  }
-  const colorsArray = Array.from(colorsList).sort();
+  const [filter, setFilter] = useState(initialValue);
+
+  useEffect(() => {
+    onChange("color", filter);
+  }, [filter]);
+
+  const colorsArray = useMemo(() => {
+    const colorsList = new Set();
+    for (let colorFromList of list) {
+      colorsList.add(colorFromList.color);
+    }
+    return Array.from(colorsList).sort();
+  }, [list]);
+
+  const handleChange = (color, checked) => {
+    if (checked) setFilter([...filter, color]);
+    else {
+      const filteredColor = filter.filter((el) => el !== color);
+      setFilter(filteredColor);
+    }
+  };
 
   return (
     <ColorFilterContainer>
@@ -20,7 +37,7 @@ const FilterByColor = ({ list, onChange }) => {
                 name="color"
                 id={color}
                 value={color}
-                onChange={(e) => onChange(e, null, "color")}
+                onChange={(e) => handleChange(color, e.target.checked)}
               />
               <label htmlFor={color}>{color}</label>
             </div>
