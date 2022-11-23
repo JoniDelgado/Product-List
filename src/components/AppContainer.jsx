@@ -25,30 +25,22 @@ const AppContainer = () => {
     getFromEndPoints();
   }, []);
 
-  const filterToApply = (filter, prod) =>
-    filter.length ? filters[filter].includes(prod[filter]) : null;
+  const filteredProductList = useMemo(() => {
+    // const filtersName = Object.keys(filters);
+    const filtersName = ["color"];
 
-  const funcion = (filter, prod) => {
-    const a = prod.filter((el) => {
-      return filterToApply(filter, el);
-    });
+    let newList;
 
-    console.log(a);
-  };
-  const algo = useMemo(() => {
-    const a = Object.keys(filters);
-
-    let matches = productList;
-
-    for (let key of a) {
-      matches = funcion(key, productList);
+    for (let filter of filtersName) {
+      newList = productList.filter((el) =>
+        filters[filter].length ? filters[filter].includes(el[filter]) : true
+      );
     }
 
-    return matches;
+    return newList;
   }, [filters]);
 
-  // console.log(algo);
-
+  console.log(filteredProductList);
   return (
     <>
       <FilterList
