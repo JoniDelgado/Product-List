@@ -26,8 +26,7 @@ const AppContainer = () => {
   }, []);
 
   const filteredProductList = useMemo(() => {
-    // const filtersName = Object.keys(filters);
-    const filtersName = ["color"];
+    const filtersName = Object.keys(filters);
 
     let newList;
 
@@ -41,6 +40,7 @@ const AppContainer = () => {
   }, [filters]);
 
   console.log(filteredProductList);
+
   return (
     <>
       <FilterList
