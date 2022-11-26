@@ -28,18 +28,16 @@ const AppContainer = () => {
   const filteredProductList = useMemo(() => {
     const filtersName = Object.keys(filters);
 
-    let newList;
+    const newList = productList.filter(
+      (el) => {
+        console.log(el);
+        // return newList;
+      },
+      [filters]
+    );
+  });
 
-    for (let filter of filtersName) {
-      newList = productList.filter((el) =>
-        filters[filter].length ? filters[filter].includes(el[filter]) : true
-      );
-    }
-
-    return newList;
-  }, [filters]);
-
-  console.log(filteredProductList);
+  // console.log(filteredProductList);
 
   return (
     <>

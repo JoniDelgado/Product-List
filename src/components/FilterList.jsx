@@ -22,4 +22,8 @@ const StyleAsideContain = styled.aside`
   display: flex;
   flex-direction: column;
   gap: 1rem;
+
+  @media screen and (max-width: 800px) {
+    display: none;
+  }
 `;

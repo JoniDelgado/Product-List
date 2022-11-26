@@ -28,13 +28,16 @@ export default ProductsList;
 const ProductSection = styled.section`
   width: 100%;
   display: grid;
-  grid-template-columns: repeat(auto-fit, 300px);
+  grid-template-columns: repeat(2, 1fr);
   justify-content: center;
   gap: 1rem;
+
+  @media screen and (min-width: 650px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
 `;
 
 const ProductArticle = styled.article`
-  width: 300px;
   max-height: 400px;
   padding: 1rem;
   display: flex;
